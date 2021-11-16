@@ -13,6 +13,7 @@ import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './jwt-payload.interface';
 import { ActivateUserDto } from './dto/activate-user.dto';
 import { User } from './user.entity';
+import { RequestResetPasswordDto } from './dto/request-reset-password.dto';
 
 @Injectable()
 export class AuthService {
@@ -59,5 +60,15 @@ export class AuthService {
     }
 
     await this.userRepository.activateUser(user);
+  }
+
+  async requestResetPassword(
+    requestResetPasswordDto: RequestResetPasswordDto,
+  ): Promise<void> {
+    const { email } = requestResetPasswordDto;
+    const user: User = await this.userRepository.findOneByEmail(email);
+    user.resetPasswordToken = v4();
+    this.userRepository.save(user);
+    //TODO: Send email (e.g. Dispatch an event so MailerModule can send the email)
   }
 }
