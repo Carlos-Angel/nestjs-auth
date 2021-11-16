@@ -39,14 +39,13 @@ export class AuthService {
   async login(loginDto: LoginDto): Promise<{ accessToken: string }> {
     const { email, password } = loginDto;
     const user = await this.userRepository.findOneByEmail(email);
-    if (
-      user &&
-      (await this.encodeService.checkPassword(password, user.password))
-    ) {
+
+    if (await this.encodeService.checkPassword(password, user.password)) {
       const payload: JwtPayload = { id: user.id, email, active: user.active };
       const accessToken = await this.jwtService.sign(payload);
       return { accessToken };
     }
+
     throw new UnauthorizedException('Please check your credentials');
   }
 
