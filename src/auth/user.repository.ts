@@ -2,6 +2,7 @@ import {
   ConflictException,
   InternalServerErrorException,
   NotFoundException,
+  UnprocessableEntityException,
 } from '@nestjs/common';
 import { EntityRepository, Repository } from 'typeorm';
 import { User } from './user.entity';
@@ -44,6 +45,16 @@ export class UserRepository extends Repository<User> {
     id: string,
     code: string,
   ): Promise<User> {
-    return await this.findOne({ id, activationToken: code, active: false });
+    const user: User = await this.findOne({
+      id,
+      activationToken: code,
+      active: false,
+    });
+
+    if (!user) {
+      throw new UnprocessableEntityException('This action can not be done');
+    }
+
+    return user;
   }
 }

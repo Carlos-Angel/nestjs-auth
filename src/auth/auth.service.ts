@@ -55,10 +55,6 @@ export class AuthService {
     const user: User =
       await this.userRepository.findOneInactiveByIdAndActivationToken(id, code);
 
-    if (!user) {
-      throw new UnprocessableEntityException('This action can not be done');
-    }
-
     await this.userRepository.activateUser(user);
   }
 
