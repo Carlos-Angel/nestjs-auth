@@ -57,4 +57,12 @@ export class UserRepository extends Repository<User> {
 
     return user;
   }
+
+  async findOneByResetPasswordToken(resetPasswordToken: string): Promise<User> {
+    const user: User = await this.findOne({ resetPasswordToken });
+    if (!user) {
+      throw new NotFoundException();
+    }
+    return user;
+  }
 }

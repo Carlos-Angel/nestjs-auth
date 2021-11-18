@@ -14,6 +14,7 @@ import { JwtPayload } from './jwt-payload.interface';
 import { ActivateUserDto } from './dto/activate-user.dto';
 import { User } from './user.entity';
 import { RequestResetPasswordDto } from './dto/request-reset-password.dto';
+import { ResetPasswordDto } from './dto/reset-password.dto';
 
 @Injectable()
 export class AuthService {
@@ -65,5 +66,16 @@ export class AuthService {
     user.resetPasswordToken = v4();
     this.userRepository.save(user);
     //TODO: Send email (e.g. Dispatch an event so MailerModule can send the email)
+  }
+
+  async resetPassword(resetPasswordDto: ResetPasswordDto): Promise<void> {
+    const { resetPasswordToken, password } = resetPasswordDto;
+    const user: User = await this.userRepository.findOneByResetPasswordToken(
+      resetPasswordToken,
+    );
+
+    user.password = await this.encodeService.encodePassword(password);
+    user.resetPasswordToken = null;
+    this.userRepository.save(user);
   }
 }
