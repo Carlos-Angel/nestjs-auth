@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   UnauthorizedException,
   UnprocessableEntityException,
@@ -15,6 +16,7 @@ import { ActivateUserDto } from './dto/activate-user.dto';
 import { User } from './user.entity';
 import { RequestResetPasswordDto } from './dto/request-reset-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 @Injectable()
 export class AuthService {
@@ -77,5 +79,18 @@ export class AuthService {
     user.password = await this.encodeService.encodePassword(password);
     user.resetPasswordToken = null;
     this.userRepository.save(user);
+  }
+
+  async changePassword(
+    changePasswordDto: ChangePasswordDto,
+    user: User,
+  ): Promise<void> {
+    const { oldPassword, newPassword } = changePasswordDto;
+    if (await this.encodeService.checkPassword(oldPassword, user.password)) {
+      user.password = await this.encodeService.encodePassword(newPassword);
+      this.userRepository.save(user);
+    } else {
+      throw new BadRequestException('Old password does not match');
+    }
   }
 }
