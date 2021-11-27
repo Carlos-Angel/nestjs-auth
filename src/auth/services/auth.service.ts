@@ -2,21 +2,20 @@ import {
   BadRequestException,
   Injectable,
   UnauthorizedException,
-  UnprocessableEntityException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { v4 } from 'uuid';
-import { UserRepository } from './user.repository';
-import { RegisterUserDto } from './dto/register-user.dto';
-import { EncoderService } from './encoder.service';
-import { LoginDto } from './dto/login.dto';
+import { UserRepository } from '@authModule/repositories/user.repository';
+import { RegisterUserDto } from '@authModule/dto/register-user.dto';
+import { EncoderService } from '@authModule/services/encoder.service';
+import { LoginDto } from '@authModule/dto/login.dto';
 import { JwtService } from '@nestjs/jwt';
-import { JwtPayload } from './jwt-payload.interface';
-import { ActivateUserDto } from './dto/activate-user.dto';
-import { User } from './user.entity';
-import { RequestResetPasswordDto } from './dto/request-reset-password.dto';
-import { ResetPasswordDto } from './dto/reset-password.dto';
-import { ChangePasswordDto } from './dto/change-password.dto';
+import { JwtPayload } from '@authModule/interfaces/jwt-payload.interface';
+import { ActivateUserDto } from '@authModule/dto/activate-user.dto';
+import { User } from '@authModule/entities/user.entity';
+import { RequestResetPasswordDto } from '@authModule/dto/request-reset-password.dto';
+import { ResetPasswordDto } from '@authModule/dto/reset-password.dto';
+import { ChangePasswordDto } from '@authModule/dto/change-password.dto';
 
 @Injectable()
 export class AuthService {

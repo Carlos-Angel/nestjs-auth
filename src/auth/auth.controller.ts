@@ -7,15 +7,15 @@ import {
   Patch,
   UseGuards,
 } from '@nestjs/common';
-import { AuthService } from './auth.service';
+import { AuthService } from '@authModule/services/auth.service';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { LoginDto } from './dto/login.dto';
 import { ActivateUserDto } from './dto/activate-user.dto';
 import { RequestResetPasswordDto } from './dto/request-reset-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
-import { GetUser } from './get-user.decorator';
-import { User } from './user.entity';
+import { GetUser } from '@authModule/decorators/get-user.decorator';
+import { User } from '@authModule/entities/user.entity';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('auth')
