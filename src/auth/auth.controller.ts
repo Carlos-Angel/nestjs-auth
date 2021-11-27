@@ -7,6 +7,7 @@ import {
   Patch,
   UseGuards,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { AuthService } from '@authModule/services/auth.service';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { LoginDto } from './dto/login.dto';
@@ -18,6 +19,7 @@ import { GetUser } from '@authModule/decorators/get-user.decorator';
 import { User } from '@authModule/entities/user.entity';
 import { AuthGuard } from '@nestjs/passport';
 
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
